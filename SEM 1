@@ -1,0 +1,17 @@
+import React from "react";
+import Welcome from "./Welcome";
+function App() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      {/* Render the Welcome component dynamically with different names */}
+      <Welcome name="Deepak" />
+      <Welcome name="Ananya" />
+      <Welcome name="Rahul" />
+    </div>
+  );
+}
+
+export default App;
+
+
+

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Marks Table</title>
+    <style>
+        table{
+            width: 60%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td{
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th{
+            cursor: pointer;
+            background: #eaeaea;
+        }
+        #filters{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Student Marks Table with Sorting & Filtering</h2>
+
+<div id="filters">
+    <label>Filter by Subject:</label>
+    <select id="subjectFilter">
+        <option value="all">All</option>
+        <option value="Maths">Maths</option>
+        <option value="Science">Science</option>
+        <option value="English">English</option>
+    </select>
+
+    &nbsp;&nbsp;
+
+    <label>Score ≥ : </label>
+    <input type="number" id="minScore" value="0">
+
+    <button onclick="applyFilters()">Apply</button>
+</div>
+
+<table id="marksTable">
+    <thead>
+        <tr>
+            <th onclick="sortTable(0)">Name</th>
+            <th onclick="sortTable(1)">Subject</th>
+            <th onclick="sortTable(2)">Marks</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
+
+<script>
+    let students = [
+        {name: "Arnab", subject: "Maths", marks: 88},
+        {name: "Riya", subject: "Science", marks: 92},
+        {name: "Kiran", subject: "English", marks: 75},
+        {name: "Neha", subject: "Maths", marks: 64},
+        {name: "Sam", subject: "Science", marks: 81}
+    ];
+
+    let sortDirection = true;
+
+    function loadTable(data){
+        const body = document.getElementById("tableBody");
+        body.innerHTML = "";
+        data.forEach(row => {
+            body.innerHTML += `
+                <tr>
+                    <td>${row.name}</td>
+                    <td>${row.subject}</td>
+                    <td>${row.marks}</td>
+                </tr>`;
+        });
+    }
+
+    function sortTable(col){
+        students.sort((a,b)=>{
+            let v1 = Object.values(a)[col];
+            let v2 = Object.values(b)[col];
+
+            if(typeof v1 === "string") v1 = v1.toLowerCase();
+            if(typeof v2 === "string") v2 = v2.toLowerCase();
+
+            return sortDirection ? v1 > v2 : v1 < v2;
+        });
+
+        sortDirection = !sortDirection;
+        loadTable(students);
+    }
+
+    function applyFilters(){
+        let subject = document.getElementById("subjectFilter").value;
+        let minScore = Number(document.getElementById("minScore").value);
+
+        let filtered = students.filter(s =>
+            (subject === "all" || s.subject === subject) &&
+            s.marks >= minScore
+        );
+
+        loadTable(filtered);
+    }
+
+    loadTable(students);
+</script>
+
+</body>
+</html>
